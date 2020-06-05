@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import { Stack } from "@fluentui/react";
+import TodoList from "./TodoList";
+import AddTodo from "./AddTodo";
 
 function App() {
+  const [todos, setTodos] = useState([
+    { id: 1, name: "First todo item" },
+    { id: 2, name: "Second todo item" },
+  ]);
+  const addTodo = (todoName) => {
+    if (todoName !== "") {
+      const newId = todos.length + 1;
+      const newTodos = [...todos, { id: newId, name: todoName }];
+      setTodos(newTodos);
+    }
+  };
+  const deleteTodo = (id) => {
+    const newTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(newTodos);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="wrapper">
+      <Stack horizontalAlign="center">
+        <h1>The Fluent To-Do App</h1>
+        <Stack style={{ width: 400 }} gap={25}>
+          <AddTodo addTodo={addTodo} />
+          <TodoList todos={todos} deleteTodo={deleteTodo} />
+        </Stack>
+      </Stack>
     </div>
   );
 }
